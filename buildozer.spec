@@ -7,7 +7,8 @@ source.include_exts = py,png,jpg,kv,atlas,json
 version = 1.1
 
 # المتطلبات الصحيحة
-requirements = python3, kivy==2.3.0, kivymd==1.2.0, pillow, pyjnius, android
+requirements = python3, kivy==2.3.0, kivymd==1.2.0, pillow, pyjnius, android, sdl2, sdl2_image, sdl2_ttf, sdl2_mixer
+
 
 # تم تعديل المسار ليكون أكثر أماناً
 icon.filename = 1772036342043.png
