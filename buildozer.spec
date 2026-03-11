@@ -7,7 +7,8 @@ source.include_exts = py,png,jpg,kv,atlas,json
 version = 1.1
 
 # المتطلبات الصحيحة
-requirements = python3, kivy==2.3.0, kivymd==1.2.0, pillow, pyjnius, android, sdl2, sdl2_image, sdl2_ttf, sdl2_mixer
+requirements = python3==3.10.12, hostpython3==3.10.12, kivy==2.2.1, kivymd==1.1.1, pillow, pyjnius, android
+
 
 
 # تم تعديل المسار ليكون أكثر أماناً
@@ -19,7 +20,7 @@ android.api = 33
 android.minapi = 24
 android.sdk = 33
 android.ndk = 25b
-android.archs = arm64-v8a
+android.archs = armeabi-v7a
 android.accept_sdk_license = True
 android.gradle_dependencies = 'com.google.android.gms:play-services-ads:22.0.0'
 fullscreen = 1
