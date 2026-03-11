@@ -1,27 +1,45 @@
 name: build
 on:
+  workflow_dispatch:
   push:
     branches: [main]
-  workflow_dispatch:
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  android:
+    runs-on: ubuntu-22.04 # تحديد نسخة مستقرة من النظام
     steps:
       - uses: actions/checkout@v4
+
+      - name: Get Date
+        id: get-date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Cache Buildozer
+        uses: actions/cache@v3
+        with:
+          path: .buildozer
+          key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - name: Install
+
+      - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y git zip unzip autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+          sudo apt install -y git zip unzip autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev python3-dev
           pip install --upgrade pip
-          pip install buildozer cython setuptools
-      - name: Build
-        run: yes | buildozer android debug
-      - name: Upload
+          pip install "cython<3.0.0" buildozer setuptools # تثبيت نسخة سيتون مستقرة
+
+      - name: Build APK
+        run: |
+          buildozer android debug || buildozer android debug # محاولة ثانية في حال فشل الاتصال بالخادم
+        env:
+          ACCEPT_SDK_LICENSE: "yes"
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: package
+          name: MobileApp
           path: bin/*.apk
